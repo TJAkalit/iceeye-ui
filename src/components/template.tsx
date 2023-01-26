@@ -90,3 +90,24 @@ export function NumControlRange(props: NumControlRangeProps) {
         </FloatingLabel>
     )
 }
+
+interface FCRProps {
+    name: string, 
+    value: number, 
+    min: number, 
+    max: number, 
+    onChange: (e: React.ChangeEvent<HTMLInputElement>)=>void, 
+}
+
+export function FloatControlRange(props: FCRProps) {
+
+    return (
+        <FloatingLabel label={`${props.name}: ${props.value}`} className="app-num-control-range">
+            <Form.Control
+                type='range' 
+                min={props.min} max={props.max} value={props.value} step='0.1'
+                onChange={props.onChange}
+            />
+        </FloatingLabel>
+    )
+}

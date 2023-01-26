@@ -11,6 +11,7 @@ import { PhysicalMachineList } from './pages/PhysMachineList';
 import { PhysicalMachine } from './pages/PhysMachine';
 import { VirtualMachineList } from './pages/VirtulaMachineList';
 import { VirtualMachine } from './pages/VirtualMachine';
+import { ServicesList, Service } from './pages/ServicesList';
 
 import { ButtonGroup, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
@@ -45,6 +46,7 @@ function SideBar() {
       <SideButton name='Главная' to='/' />
       <SideButton name='Физические машины' to='/physical-machine/' />
       <SideButton name='Виртуальные машины' to='/virtual-machine/' />
+      <SideButton name='Сервисы' to='/service/' />
     </ButtonGroup>
   )
 }
@@ -75,15 +77,6 @@ function ExamplePage() {
   )
 }
 
-function AppPage({ children }: { children: React.ReactNode }) {
-  console.log(children)
-  return (
-    <>
-      {children}
-    </>
-  )
-}
-
 function App() {
   return (
     <BrowserRouter>
@@ -96,7 +89,9 @@ function App() {
           <Route path='/physical-machine/:id' element={<PhysicalMachine />} />
           <Route path='/virtual-machine/' element={<VirtualMachineList />} />
           <Route path='/virtual-machine/:id' element={<VirtualMachine />} />
-          <Route path='/example' element={<AppPage><ExamplePage /></AppPage>} />
+          <Route path='/service/' element={<ServicesList />} />
+          <Route path='/service/:id' element={<Service />} />
+          <Route path='/example' element={<ExamplePage />} />
         </Routes>
       </Container>
     </BrowserRouter>

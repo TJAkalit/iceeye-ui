@@ -14,3 +14,11 @@ export interface IVirtualMachine {
     ram: number,
     pm_id?: number
 }
+
+export interface IService {
+    id?: number,
+    name: string,
+    cpu: number,
+    ram: number,
+    vm_id?: number,
+}
