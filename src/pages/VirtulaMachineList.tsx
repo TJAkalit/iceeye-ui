@@ -22,62 +22,7 @@ import {
 import { IVirtualMachine } from "../models";
 import axios from "axios";
 import { useEnpoints } from "../hooks/enpoints";
-import { usePhysMachineList } from '../hooks/physMachineList';
 import { useVirtMachineList } from '../hooks/virtMachineList';
-
-export function VirtualMachine() {
-
-    const { id } = useParams<'id'>();
-    const [data, setData] = useState<IVirtualMachine>({ name: '', cpu: 0, ram: 0 });
-    const [loaded, setLoaded] = useState(false);
-    const endpoint = useEnpoints();
-
-    async function fetchMachine() {
-        const response = await axios.get<IVirtualMachine>(`${endpoint.virtMachine}${id}`);
-        setData(response.data);
-        setLoaded(true);
-    }
-    useEffect(() => { fetchMachine() }, [])
-
-    function DataView(prop: { item: IVirtualMachine }) {
-        const [name, setName] = useState(prop.item.name)
-        const [cpu, setCpu] = useState(prop.item.cpu)
-        const [ram, setRam] = useState(prop.item.ram)
-        const [physId, setPhysId] = useState(prop.item.pm_id)
-
-        const pmList = usePhysMachineList();
-
-        return (
-            <Form className='app-form-control'>
-                <NumControl label='id' value={prop.item.id} onChange={(e: React.ChangeEvent<HTMLInputElement>) => { }} />
-                <TextControl label='name' value={name} onChange={(e: React.ChangeEvent<HTMLInputElement>) => { setName(e.target.value) }} />
-                <NumControl label='cpu' value={cpu} onChange={(e: React.ChangeEvent<HTMLInputElement>) => { setCpu(Number(e.target.value)) }} />
-                <NumControl label='ram' value={ram} onChange={(e: React.ChangeEvent<HTMLInputElement>) => { setRam(Number(e.target.value)) }} />
-                <Form.Select value={physId} className='app-num-control-select' aria-label="Default select example" onChange={()=>{}}>
-                    <option>Open this select menu</option>
-                    {
-                        pmList.items.map(
-                            item => <option value={item.id} key={item.id}>{item.name}</option>
-                        )
-                    }
-                </Form.Select>
-            </Form>
-        )
-    }
-
-    return (
-        <div className='app-page'>
-            <ToolKit>
-                <Button>Сохранить</Button>
-                <Button variant='danger'>Удалить</Button>
-                <ReloadButton name='Сбросить' />
-            </ToolKit>
-            <AppPageContent name='Виртуальная машина'>
-                {loaded && <DataView item={data} />}
-            </AppPageContent>
-        </div>
-    )
-}
 
 function AddVirtualMachine(props: { close: () => void, addMachine: (item: IVirtualMachine) => void }) {
 
