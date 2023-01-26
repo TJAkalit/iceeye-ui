@@ -23,18 +23,41 @@ export function AppPageContent({ children, name }: { children: React.ReactNode, 
     )
 }
 
-export function TextControl(props: { label: string, value: string, onChange: (e: React.ChangeEvent<HTMLInputElement>) => void }) {
+interface TCProps {
+    label: string, 
+    value: string, 
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void,
+    changed?: boolean
+}
+
+export function TextControl(props: TCProps) {
+
+    let classes = 'app-num-control';
+    if (props.changed)
+        classes += ' app-control-changed';
+
     return (
-        <FloatingLabel label={props.label} className='app-text-control'>
+        <FloatingLabel label={props.label} className={classes}>
             <Form.Control value={props.value} onChange={props.onChange}/>
         </FloatingLabel>
     )
 }
 
-export function NumControl(props: { label: string, value: number | undefined, onChange: (e: React.ChangeEvent<HTMLInputElement>) => void }) {
+interface NCProps {
+    label: string,
+    value: number|undefined,
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void,
+    changed?: boolean
+}
+
+export function NumControl(props: NCProps) {
+
+    let classes = 'app-num-control';
+    if (props.changed)
+        classes += ' app-control-changed';
 
     return (
-        <FloatingLabel label={props.label} className='app-num-control'>
+        <FloatingLabel label={props.label} className={classes}>
             <Form.Control value={props.value} onChange={props.onChange}/>
         </FloatingLabel>
     )
@@ -47,13 +70,18 @@ export function ReloadButton(props: { name: string }) {
     )
 }
 
-export function NumControlRange(props: {name: string, value: number, min: number, max: number, onChange: (e: React.ChangeEvent<HTMLInputElement>)=>void}) {
+interface NumControlRangeProps {
+    name: string, 
+    value: number, 
+    min: number, 
+    max: number, 
+    onChange: (e: React.ChangeEvent<HTMLInputElement>)=>void, 
+}
 
-    const [start, setStart] = useState(props.value);
-    const [current, setCurrent] = useState(start);
+export function NumControlRange(props: NumControlRangeProps) {
 
     return (
-        <FloatingLabel label={`${props.name}: ${current}`} className="app-num-control-range">
+        <FloatingLabel label={`${props.name}: ${props.value}`} className="app-num-control-range">
             <Form.Control
                 type='range' 
                 min={props.min} max={props.max} value={props.value}

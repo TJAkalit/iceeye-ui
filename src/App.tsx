@@ -7,8 +7,9 @@ import {
   Route,
 } from 'react-router-dom';
 import { Container } from 'react-bootstrap';
-import { PhysicalMachineList, PhysicalMachine } from './pages/PhysMachine';
-import { VirtualMachineList, VirtualMachine } from './pages/VirtulaMachine';
+import { PhysicalMachineList } from './pages/PhysMachineList';
+import { PhysicalMachine } from './pages/PhysMachine';
+import { VirtualMachineList, VirtualMachine } from './pages/VirtulaMachineList';
 
 import { ButtonGroup, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
