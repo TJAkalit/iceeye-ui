@@ -4,12 +4,15 @@ import React, {
 import {
     useNavigate,
     useParams,
+    Link,
+    useLocation,
 } from 'react-router-dom';
 import {
     Button,
     Table,
     Container,
     Form,
+    Pagination,
 } from "react-bootstrap";
 import {
     ToolKit,
@@ -93,16 +96,14 @@ function VirtualMachineRow(props: { item: IVirtualMachine }) {
     };
 
     return (
-        <tr
-            key={props.item.id}
-            onClick={() => nav(`/virtual-machine/${props.item.id}`)}
-        >
+        <tr key={props.item.id}>
             <td>{props.item.id}</td>
             <td>{props.item.name}</td>
             <td>{props.item.cpu}</td>
             <td>{props.item.ram}</td>
             <td>{props.item.size}</td>
             <td>{getName(props.item.pm_id)}</td>
+            <td><Link to={`/virtual-machine/${props.item.id}`} >Подробнее</Link></td>
         </tr>
 
     )
@@ -124,15 +125,29 @@ class Pagginator<T>{
 
     getPage(page: number): T[] {
         let pageItems: T[] = [];
-        let startItem: number = page * this.count;
+        let startItem: number = (page - 1) * this.count;
         let endItem: number = startItem + this.count;
-        console.log('s ' + startItem);
-        console.log('e ' + endItem);
+
+        if (startItem > this.items.length)
+            return [];
+
+        if (endItem > this.items.length)
+            endItem = this.items.length;
+
         for (let i = startItem; i < endItem; i++){
             pageItems.push(this.items[i]);
-            console.log(i);
         };
         return pageItems;
+    };
+    hasNext(page: number): boolean {
+        let startItem: number = (page) * this.count;
+        return startItem <= this.items.length;
+    };
+    hasPrev(page: number): boolean {
+        let startItem: number = (page - 2) * this.count;
+        let endItem: number = startItem + this.count;
+
+        return startItem >= 0;
     };
 };
 
@@ -145,16 +160,27 @@ export function VirtualMachineList() {
         'Имя',
         'ЦПУ',
         'ОЗУ, ГБ',
-        'Размер, ГЮ',
+        'Размер, ГБ',
         'Хост',
+        '',
     ];
+    const nav = useNavigate();
 
-    const [page, setPage] = useState<number>(1);
-    const perPage: number = 10;
-    const rows: IVirtualMachine[] = []
+    const { search } = useLocation();
 
+    
+    function usePage(){
+        let page: string | number | null = React.useMemo(() => new URLSearchParams(search), [search]).get('page');
+        if (typeof page==='string' && !Number.isNaN(Number(page)))
+        page = Number(page)
+        else 
+        page = 1
+        return page;
+    };
+    
+    let page = usePage();
 
-    let p = new Pagginator<IVirtualMachine>(machines.items, 10);
+    let p = new Pagginator<IVirtualMachine>(machines.items, 20);
 
     return (
         <div className='app-page'>
@@ -191,7 +217,7 @@ export function VirtualMachineList() {
                     <PMListState>
                         <tbody>
                             {
-                                machines.items.map(
+                                p.getPage(page).map(
                                     (item) => <VirtualMachineRow key={item.id} item={item} />
                                 )
                             }
@@ -199,6 +225,13 @@ export function VirtualMachineList() {
                     </PMListState>
                 </Table>
                 {machines.modal && <AddVirtualMachine addMachine={machines.addItems} close={machines.close} />}
+                <Pagination>
+                    { page!==2 && page!==1 && <Pagination.Item onClick={()=>{nav(`/virtual-machine/?page=1`)}}>{'<<'}</Pagination.Item>}
+                    { p.hasPrev(page) && <Pagination.Item onClick={()=>{nav(`/virtual-machine/?page=${page - 1}`)}}>{page - 1}</Pagination.Item>}
+                    <Pagination.Item active>{page}</Pagination.Item>
+                    { p.hasNext(page) && <Pagination.Item onClick={()=>{nav(`/virtual-machine/?page=${page + 1}`)}}>{page + 1}</Pagination.Item>}
+                    { page!==p.pages() && page!==(p.pages()-1) && <Pagination.Item onClick={()=>{nav(`/virtual-machine/?page=${p.pages()}`)}}>{'>>'}</Pagination.Item>}
+                </Pagination>
             </div>
         </div>
     )

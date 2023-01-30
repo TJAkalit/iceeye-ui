@@ -24,7 +24,7 @@ function OneLoad(props: {item: IPhysicalLoad}){
             <div>ОЗУ: {props.item.ram} ГБ</div>
             <ProgressBar now={props.item.cpu_sum / (props.item.cpu * props.item.cpu_multiply) * 100} label={`${props.item.cpu_sum} / ${props.item.cpu * props.item.cpu_multiply}`} />
             <ProgressBar variant="success" now={props.item.ram_sum / props.item.ram * 100} label={`${props.item.ram_sum} / ${props.item.ram} ГБ`} />
-            <ProgressBar variant="warning" now={props.item.virtual_machine_size / props.item.storage_sum * 100 } label={`${props.item.virtual_machine_size} / ${props.item.storage_sum} ГБ`} />
+            <ProgressBar variant="dark" now={props.item.virtual_machine_size / props.item.storage_sum * 100 } label={`${props.item.virtual_machine_size} / ${props.item.storage_sum} ГБ`} />
         </Card>
     )
 }

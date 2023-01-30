@@ -3,6 +3,7 @@ import React, {
     useEffect,
 } from "react";
 import {
+    useNavigate,
     useParams,
 } from "react-router-dom";
 import { useVirtMachine } from "../hooks/virtMachine";
@@ -24,16 +25,18 @@ export function VirtualMachine() {
     const { id } = useParams<'id'>();
     const i = useVirtMachine(Number(id));
     const pm = usePhysMachineList();
+    const nav = useNavigate();
 
     return (
         <div className='app-page'>
             <ToolKit>
+                <Button variant="light" onClick={()=>nav(-1)}>{'<<'} Назад</Button>
+                <ReloadButton name='Сбросить' />
+                <Button variant='danger' onClick={i.deleteMachine}>Удалить</Button>
                 <Button
                     disabled={!i.cCpu && !i.cName && !i.cRam && !i.cPMid && !i.cSize}
                     onClick={i.updateMachine}
                 >Сохранить</Button>
-                <Button variant='danger' onClick={i.deleteMachine}>Удалить</Button>
-                <ReloadButton name='Сбросить' />
             </ToolKit>
             <AppPageContent name='Виртуальная машина'>
                 <Form className='app-form-control'>
