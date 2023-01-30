@@ -29,7 +29,7 @@ export function VirtualMachine() {
         <div className='app-page'>
             <ToolKit>
                 <Button
-                    disabled={!i.cCpu && !i.cName && !i.cRam && !i.cPMid}
+                    disabled={!i.cCpu && !i.cName && !i.cRam && !i.cPMid && !i.cSize}
                     onClick={i.updateMachine}
                 >Сохранить</Button>
                 <Button variant='danger' onClick={i.deleteMachine}>Удалить</Button>
@@ -58,6 +58,12 @@ export function VirtualMachine() {
                         value={i.ram}
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) => { i.setRam(Number(e.target.value)) }}
                         changed={i.cRam}
+                    />
+                    <NumControl
+                        label='size'
+                        value={i.size}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => { i.setSize(Number(e.target.value)) }}
+                        changed={i.cSize}
                     />
                     <Form.Select
                         value={i.pm_id}

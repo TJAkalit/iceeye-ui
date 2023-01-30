@@ -5,18 +5,22 @@ import {
   BrowserRouter,
   Routes,
   Route,
+  Link,
 } from 'react-router-dom';
-import { Container } from 'react-bootstrap';
+import { Container, ListGroup } from 'react-bootstrap';
 import { PhysicalMachineList } from './pages/PhysMachineList';
 import { PhysicalMachine } from './pages/PhysMachine';
 import { VirtualMachineList } from './pages/VirtulaMachineList';
 import { VirtualMachine } from './pages/VirtualMachine';
 import { ServicesList, Service } from './pages/ServicesList';
+import { StorageList, Storage } from './pages/Storage';
 
 import { ButtonGroup, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
 import { ToolKit, AppPageContent } from './components/template';
+import { PhysicalLoad } from './pages/Load';
+import { Accordion } from 'react-bootstrap';
 
 function LoginPage() {
 
@@ -29,9 +33,9 @@ function SideBar() {
 
   function SideButton(prop: { name: string, to: string }) {
     const nav = useNavigate();
-    const variant = 'secondary'
+    const variant = 'light'
     return (
-      <Button
+      <Button className='app-sidebar-btn'
         onClick={() => nav(prop.to)}
         variant={variant}
       >{prop.name}</Button>
@@ -39,15 +43,34 @@ function SideBar() {
   }
 
   return (
-    <ButtonGroup
-      vertical
-      className='app-sidebar'
-    >
-      <SideButton name='Главная' to='/' />
-      <SideButton name='Физические машины' to='/physical-machine/' />
-      <SideButton name='Виртуальные машины' to='/virtual-machine/' />
-      <SideButton name='Сервисы' to='/service/' />
-    </ButtonGroup>
+    <>
+      <Accordion 
+      defaultActiveKey="0" 
+      flush
+      >
+        <Accordion.Item eventKey="0">
+          <Accordion.Header>Структура</Accordion.Header>
+          <Accordion.Body className='app-sidebar-accordion'>
+            <ButtonGroup vertical className='app-sidebar'>
+              <SideButton name='Физические машины' to='/physical-machine/' />
+              <SideButton name='Хранилища' to='/storage/' />
+              <SideButton name='Группы физических машин(-)' to='/tmp/' />
+            </ButtonGroup>
+          </Accordion.Body>
+        </Accordion.Item>
+        <Accordion.Item eventKey="1">
+          <Accordion.Header>Продуктовая среда</Accordion.Header>
+          <Accordion.Body className='app-sidebar-accordion'>
+            <ButtonGroup vertical className='app-sidebar'>
+              <SideButton name='Виртуальные машины' to='/virtual-machine/' />
+              <SideButton name='Группы виртуальных машин(-)' to='/tmp/' />
+              <SideButton name='Сервисы' to='/service/' />
+              <SideButton name='Визуализация нагрузки' to='/load-vizualize/' />
+            </ButtonGroup>
+          </Accordion.Body>
+        </Accordion.Item>
+      </Accordion>
+    </>
   )
 }
 
@@ -91,6 +114,9 @@ function App() {
           <Route path='/virtual-machine/:id' element={<VirtualMachine />} />
           <Route path='/service/' element={<ServicesList />} />
           <Route path='/service/:id' element={<Service />} />
+          <Route path='/load-vizualize/' element={<PhysicalLoad />} />
+          <Route path='/storage/' element={<StorageList/>} />
+          <Route path='/storage/:id' element={<Storage/>} />
           <Route path='/example' element={<ExamplePage />} />
         </Routes>
       </Container>

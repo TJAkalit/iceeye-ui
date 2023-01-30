@@ -11,6 +11,7 @@ const emptyMachine: IVirtualMachine = {
     name: '',
     cpu: 0,
     ram: 0,
+    size: 0,
 }
 
 export function useVirtMachine(id: number | undefined) {
@@ -21,11 +22,13 @@ export function useVirtMachine(id: number | undefined) {
     const [cpu, setCpu] = useState(machine.cpu);
     const [ram, setRam] = useState(machine.ram);
     const [pm_id, setPMid] = useState(machine.pm_id);
+    const [size, setSize] = useState(machine.size);
 
     const [cName, setCName] = useState(false);
     const [cCpu, setCCpu] = useState(false);
     const [cRam, setCRam] = useState(false);
     const [cPMid, setCPMid] = useState(false);
+    const [cSize, setCSize] = useState(false)
 
     const ep = useEnpoints();
     const nav = useNavigate();
@@ -37,12 +40,17 @@ export function useVirtMachine(id: number | undefined) {
         setCpu(r.data.cpu);
         setRam(r.data.ram);
         setPMid(r.data.pm_id);
+        setSize(r.data.size);
     };
 
     useEffect(() => { if (!(id==null))fetchMachine() }, []);
     useEffect(
         () => {
-            setCName(machine.name != name); setCRam(machine.ram != ram); setCCpu(machine.cpu != cpu); setCPMid(machine.pm_id != pm_id);
+            setCName(machine.name != name); 
+            setCRam(machine.ram != ram); 
+            setCCpu(machine.cpu != cpu); 
+            setCPMid(machine.pm_id != pm_id);
+            setCSize(machine.size != size);
         }
     )
 
@@ -63,6 +71,7 @@ export function useVirtMachine(id: number | undefined) {
                     cpu: cpu,
                     ram: ram,
                     pm_id: pm_id,
+                    size: size,
                 }
             );
             nav(0);
@@ -76,13 +85,16 @@ export function useVirtMachine(id: number | undefined) {
         setCpu,
         setRam,
         setPMid,
+        setSize,
         cName,
         cCpu,
         cRam,
         cPMid,
+        cSize,
         name,
         cpu,
         ram,
+        size,
         pm_id,
         updateMachine,
         deleteMachine,

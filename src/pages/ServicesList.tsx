@@ -61,7 +61,7 @@ export function Service() {
                         <option>Open this select menu</option>
                         {
                             vms.items.map(
-                                item => <option value={item.id} key={item.id}>{item.name}</option>
+                                item => <option key={item.id} value={item.id}>{item.name}</option>
                             )
                         }
                     </Form.Select>
