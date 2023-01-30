@@ -64,6 +64,7 @@ code {
 
 .app-page-content > * {
   flex: 0 0 auto;
+  width: 100%;
 }
 
 .app-form-control {
