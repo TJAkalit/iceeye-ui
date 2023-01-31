@@ -132,7 +132,7 @@ export function VirtualMachineList() {
     return (
         <div className='app-page'>
             <ToolKit>
-                <Button variant='primary' onClick={() => machines.reload()}>Перезагрузить</Button>
+                <Button variant='primary' onClick={() => {machines.reload(); machines.setSearchName(''); machines.setSearchHostName('')}}>Перезагрузить</Button>
                 <Button variant='success' onClick={machines.open}>Создать</Button>
                 <Form.Control
                     size="sm"
