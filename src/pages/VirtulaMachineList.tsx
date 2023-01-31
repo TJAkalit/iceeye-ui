@@ -6,6 +6,8 @@ import {
     useParams,
     Link,
     useLocation,
+    redirect,
+    Navigate
 } from 'react-router-dom';
 import {
     Button,
@@ -130,7 +132,7 @@ export function VirtualMachineList() {
     return (
         <div className='app-page'>
             <ToolKit>
-                <Button variant='primary' onClick={() => nav(0)}>Перезагрузить</Button>
+                <Button variant='primary' onClick={() => machines.reload()}>Перезагрузить</Button>
                 <Button variant='success' onClick={machines.open}>Создать</Button>
                 <Form.Control
                     size="sm"

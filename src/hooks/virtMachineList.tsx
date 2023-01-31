@@ -33,6 +33,7 @@ export function useVirtMachineList() {
 
     const close = () => setModal(false);
     const open = () => setModal(true);
+    const reload = () => fetchItems();
 
     return {
         items, setItems, 
@@ -41,5 +42,6 @@ export function useVirtMachineList() {
         searchName, setSearchName,
         searchHostName, setSearchHostName,
         fetchBySearch,
+        reload,
     }
 }
