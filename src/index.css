@@ -47,7 +47,23 @@ code {
   width: 100%;
 }
 
-.app-page-toolkit > * {
+.app-page-bottombar {
+  flex: 0 0 auto;
+  margin: 10px 10px 10px 10px;
+  display: flex;
+  flex-flow: row;
+  align-content: space-between;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.app-page-bottombar>* {
+  flex: 0 0 200px;
+  margin: 0 5px 0 5px;
+  max-width: 30%;
+}
+
+.app-page-toolkit>* {
   margin: 0 5px 0 5px;
 }
 
@@ -62,7 +78,7 @@ code {
   align-content: flex-start;
 }
 
-.app-page-content > * {
+.app-page-content>* {
   flex: 0 0 auto;
   width: 100%;
 }
@@ -74,6 +90,7 @@ code {
 .app-text-control {
   margin: 10px;
 }
+
 .app-num-control {
   margin: 10px;
 }
@@ -93,17 +110,18 @@ code {
 .app-sidebar-accordion {
   padding: 0;
 }
+
 .app-sidebar-btn {
   width: 100%;
 }
 
-.app-black{
+.app-black {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0,0,0, 0.5);
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 .app-modal {

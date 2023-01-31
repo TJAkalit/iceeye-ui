@@ -12,8 +12,6 @@ export function useVirtMachineList() {
     const [searchName, setSearchName] = useState('');
     const [searchHostName, setSearchHostName] = useState('');
 
-    const [to, setTO] = useState<any>();
-
     async function fetchItems() {
         const result = await axios.get<IVirtualMachine[]>(`${ep.virtMachine}`);
         setItems(result.data);

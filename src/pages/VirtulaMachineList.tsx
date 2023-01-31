@@ -16,20 +16,20 @@ import {
 } from "react-bootstrap";
 import {
     ToolKit,
+    BottomBar,
     TextControl,
     NumControl,
     NumControlRange,
-    ReloadButton,
-    AppPageContent,
 } from "../components/template";
 import { IVirtualMachine } from "../models";
 import axios from "axios";
 import { useEnpoints } from "../hooks/enpoints";
 import { useVirtMachineList } from '../hooks/virtMachineList';
-import { useVirtMachine } from "../hooks/virtMachine";
-import { usePhysMachine } from "../hooks/PhysMachine";
+import { Paginator } from '../lib/arrays';
+import { usePage } from '../hooks/query';
 
 import { PMListState, PMListContext } from "../context/PhysicalMachine";
+
 
 function AddVirtualMachine(props: { close: () => void, addMachine: (item: IVirtualMachine) => void }) {
 
@@ -109,49 +109,6 @@ function VirtualMachineRow(props: { item: IVirtualMachine }) {
     )
 }
 
-class Pagginator<T>{
-
-    private items: T[]
-    private count: number;
-
-    constructor(items: T[], count: number) {
-        this.items = items;
-        this.count = count;
-    };
-
-    pages(): number {
-        return (this.items.length - this.items.length % this.count)/this.count + 1;
-    };
-
-    getPage(page: number): T[] {
-        let pageItems: T[] = [];
-        let startItem: number = (page - 1) * this.count;
-        let endItem: number = startItem + this.count;
-
-        if (startItem > this.items.length)
-            return [];
-
-        if (endItem > this.items.length)
-            endItem = this.items.length;
-
-        for (let i = startItem; i < endItem; i++){
-            pageItems.push(this.items[i]);
-        };
-        return pageItems;
-    };
-    hasNext(page: number): boolean {
-        let startItem: number = (page) * this.count;
-        return startItem <= this.items.length;
-    };
-    hasPrev(page: number): boolean {
-        let startItem: number = (page - 2) * this.count;
-        let endItem: number = startItem + this.count;
-
-        return startItem >= 0;
-    };
-};
-
-
 export function VirtualMachineList() {
 
     const machines = useVirtMachineList();
@@ -166,26 +123,15 @@ export function VirtualMachineList() {
     ];
     const nav = useNavigate();
 
-    const { search } = useLocation();
-
-    
-    function usePage(){
-        let page: string | number | null = React.useMemo(() => new URLSearchParams(search), [search]).get('page');
-        if (typeof page==='string' && !Number.isNaN(Number(page)))
-        page = Number(page)
-        else 
-        page = 1
-        return page;
-    };
-    
     let page = usePage();
-
-    let p = new Pagginator<IVirtualMachine>(machines.items, 20);
+    let [iPP, setIPP] = useState(20);
+    let p = new Paginator<IVirtualMachine>(machines.items, iPP);
 
     return (
         <div className='app-page'>
             <ToolKit>
-                <Button onClick={machines.open}>Создать</Button>
+                <Button variant='primary' onClick={() => nav(0)}>Перезагрузить</Button>
+                <Button variant='success' onClick={machines.open}>Создать</Button>
                 <Form.Control
                     size="sm"
                     placeholder='Поиск: виртуальная машина...'
@@ -225,13 +171,29 @@ export function VirtualMachineList() {
                     </PMListState>
                 </Table>
                 {machines.modal && <AddVirtualMachine addMachine={machines.addItems} close={machines.close} />}
-                <Pagination>
-                    { page!==2 && page!==1 && <Pagination.Item onClick={()=>{nav(`/virtual-machine/?page=1`)}}>{'<<'}</Pagination.Item>}
-                    { p.hasPrev(page) && <Pagination.Item onClick={()=>{nav(`/virtual-machine/?page=${page - 1}`)}}>{page - 1}</Pagination.Item>}
-                    <Pagination.Item active>{page}</Pagination.Item>
-                    { p.hasNext(page) && <Pagination.Item onClick={()=>{nav(`/virtual-machine/?page=${page + 1}`)}}>{page + 1}</Pagination.Item>}
-                    { page!==p.pages() && page!==(p.pages()-1) && <Pagination.Item onClick={()=>{nav(`/virtual-machine/?page=${p.pages()}`)}}>{'>>'}</Pagination.Item>}
-                </Pagination>
+                <BottomBar>
+                    <div></div>
+                    <Pagination>
+                        {page !== 2 && page !== 1 && <Pagination.Item onClick={() => { nav(`/virtual-machine/?page=1`) }}>{'«'}</Pagination.Item>}
+                        {p.hasPrev(page) && <Pagination.Item onClick={() => { nav(`/virtual-machine/?page=${page - 1}`) }}>{page - 1}</Pagination.Item>}
+                        <Pagination.Item active>{page}</Pagination.Item>
+                        {p.hasNext(page) && <Pagination.Item onClick={() => { nav(`/virtual-machine/?page=${page + 1}`) }}>{page + 1}</Pagination.Item>}
+                        {page !== p.pages() && page !== (p.pages() - 1) && <Pagination.Item onClick={() => { nav(`/virtual-machine/?page=${p.pages()}`) }}>{'»'}</Pagination.Item>}
+                    </Pagination>
+                    <Form.Select
+                        size="sm"
+                        value={iPP}
+                        onChange={(e: React.ChangeEvent<HTMLSelectElement>) => { setIPP(Number(e.target.value)) }}
+                        aria-label="Default select example">
+                        <option value="10">10</option>
+                        <option value="15">15</option>
+                        <option value="20">20</option>
+                        <option value="25">25</option>
+                        <option value="30">30</option>
+                        <option value="35">35</option>
+                        <option value="40">40</option>
+                    </Form.Select>
+                </BottomBar>
             </div>
         </div>
     )

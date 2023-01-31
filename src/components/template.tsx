@@ -12,6 +12,14 @@ export function ToolKit({ children }: { children: React.ReactNode }) {
             {children}
         </div>
     )
+};
+
+export function BottomBar({ children }: { children: React.ReactNode }) {
+    return (
+        <div className='app-page-bottombar'>
+            {children}
+        </div>
+    )
 }
 
 export function AppPageContent({ children, name }: { children: React.ReactNode, name: string }) {
@@ -24,8 +32,8 @@ export function AppPageContent({ children, name }: { children: React.ReactNode, 
 }
 
 interface TCProps {
-    label: string, 
-    value: string, 
+    label: string,
+    value: string,
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void,
     changed?: boolean
 }
@@ -38,14 +46,14 @@ export function TextControl(props: TCProps) {
 
     return (
         <FloatingLabel label={props.label} className={classes}>
-            <Form.Control value={props.value} onChange={props.onChange}/>
+            <Form.Control value={props.value} onChange={props.onChange} />
         </FloatingLabel>
     )
 }
 
 interface NCProps {
     label: string,
-    value: number|undefined,
+    value: number | undefined,
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void,
     changed?: boolean
 }
@@ -58,7 +66,7 @@ export function NumControl(props: NCProps) {
 
     return (
         <FloatingLabel label={props.label} className={classes}>
-            <Form.Control value={props.value} onChange={props.onChange}/>
+            <Form.Control value={props.value} onChange={props.onChange} />
         </FloatingLabel>
     )
 }
@@ -71,11 +79,11 @@ export function ReloadButton(props: { name: string }) {
 }
 
 interface NumControlRangeProps {
-    name: string, 
-    value: number, 
-    min: number, 
-    max: number, 
-    onChange: (e: React.ChangeEvent<HTMLInputElement>)=>void, 
+    name: string,
+    value: number,
+    min: number,
+    max: number,
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void,
 }
 
 export function NumControlRange(props: NumControlRangeProps) {
@@ -83,7 +91,7 @@ export function NumControlRange(props: NumControlRangeProps) {
     return (
         <FloatingLabel label={`${props.name}: ${props.value}`} className="app-num-control-range">
             <Form.Control
-                type='range' 
+                type='range'
                 min={props.min} max={props.max} value={props.value}
                 onChange={props.onChange}
             />
@@ -92,11 +100,11 @@ export function NumControlRange(props: NumControlRangeProps) {
 }
 
 interface FCRProps {
-    name: string, 
-    value: number, 
-    min: number, 
-    max: number, 
-    onChange: (e: React.ChangeEvent<HTMLInputElement>)=>void, 
+    name: string,
+    value: number,
+    min: number,
+    max: number,
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void,
 }
 
 export function FloatControlRange(props: FCRProps) {
@@ -104,7 +112,7 @@ export function FloatControlRange(props: FCRProps) {
     return (
         <FloatingLabel label={`${props.name}: ${props.value}`} className="app-num-control-range">
             <Form.Control
-                type='range' 
+                type='range'
                 min={props.min} max={props.max} value={props.value} step='0.1'
                 onChange={props.onChange}
             />
